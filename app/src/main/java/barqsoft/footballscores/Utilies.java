@@ -1,5 +1,7 @@
 package barqsoft.footballscores;
 
+import android.content.Context;
+
 /**
  * Created by yehya khaled on 3/3/2015.
  */
@@ -10,46 +12,67 @@ public class Utilies
     public static final int CHAMPIONS_LEAGUE = 362;
     public static final int PRIMERA_DIVISION = 358;
     public static final int BUNDESLIGA = 351;
-    public static String getLeague(int league_num)
+    public static final int BUNDESLIGA1 = 394;
+    public static final int BUNDESLIGA2 = 395;
+    public static final int LIGUE1 = 396;
+    public static final int LIGUE2 = 397;
+    public static final int PREMIER_LEAGUE = 398;
+    public static final int SEGUNDA_DIVISION = 400;
+    public static final int PRIMERA_LIGA = 402;
+    public static final int Bundesliga3 = 403;
+    public static final int EREDIVISIE = 404;
+
+
+    public static String getLeague(Context context, int league_num)
     {
         switch (league_num)
         {
-            case SERIE_A : return "Seria A";
-            case PREMIER_LEGAUE : return "Premier League";
-            case CHAMPIONS_LEAGUE : return "UEFA Champions League";
-            case PRIMERA_DIVISION : return "Primera Division";
-            case BUNDESLIGA : return "Bundesliga";
-            default: return "Not known League Please report";
+            case SERIE_A : return context.getString(R.string.seriaa);
+            case PREMIER_LEGAUE : return context.getString(R.string.premierleague);
+            case CHAMPIONS_LEAGUE : return context.getString(R.string.champions_league);
+            case PRIMERA_DIVISION : return context.getString(R.string.primeradivison);
+            case BUNDESLIGA : return context.getString(R.string.bundesliga);
+            case BUNDESLIGA1 : return "Bundesliga1";
+            case BUNDESLIGA2 : return "Bundesliga2";
+            case Bundesliga3 : return "Bundesliga3";
+            case LIGUE1 : return "Ligue1";
+            case LIGUE2 : return  "Ligue2";
+            case PREMIER_LEAGUE : return "Premier League";
+            case SEGUNDA_DIVISION : return "Segunda Division";
+            case PRIMERA_LIGA : return "Primeira Liga";
+            case EREDIVISIE : return "Erediviste";
+
+            default: return context.getString(R.string.not_known_league_text);
         }
     }
-    public static String getMatchDay(int match_day,int league_num)
+    public static String getMatchDay(Context context, int match_day,int league_num)
     {
         if(league_num == CHAMPIONS_LEAGUE)
         {
             if (match_day <= 6)
             {
-                return "Group Stages, Matchday : 6";
+                return context.getString(R.string.group_stage_text) + ", " + context.getString(R.string.matchday_text) +" : 6";
             }
             else if(match_day == 7 || match_day == 8)
             {
-                return "First Knockout round";
+                return context.getString(R.string.first_knockout_round);
             }
             else if(match_day == 9 || match_day == 10)
             {
-                return "QuarterFinal";
+                return context.getString(R.string.quarter_final);
             }
             else if(match_day == 11 || match_day == 12)
             {
-                return "SemiFinal";
+                return context.getString(R.string.semi_final);
             }
             else
             {
-                return "Final";
+                return context.getString(R.string.final_text);
             }
         }
         else
         {
-            return "Matchday : " + String.valueOf(match_day);
+            return context.getString(R.string.matchday_text) + " : " + String.valueOf(match_day);
         }
     }
 
@@ -73,6 +96,7 @@ public class Utilies
             //as you go.
             case "Arsenal London FC" : return R.drawable.arsenal;
             case "Manchester United FC" : return R.drawable.manchester_united;
+            case "Manchester City FC" : return R.drawable.manchester_city;
             case "Swansea City" : return R.drawable.swansea_city_afc;
             case "Leicester City" : return R.drawable.leicester_city_fc_hd_logo;
             case "Everton FC" : return R.drawable.everton_fc_logo1;

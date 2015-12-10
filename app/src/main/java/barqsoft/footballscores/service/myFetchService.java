@@ -54,7 +54,7 @@ public class myFetchService extends IntentService
 
         Uri fetch_build = Uri.parse(BASE_URL).buildUpon().
                 appendQueryParameter(QUERY_TIME_FRAME, timeFrame).build();
-        //Log.v(LOG_TAG, "The url we are looking at is: "+fetch_build.toString()); //log spam
+        Log.v(LOG_TAG, "The url we are looking at is: "+fetch_build.toString()); //log spam
         HttpURLConnection m_connection = null;
         BufferedReader reader = null;
         String JSON_data = null;
@@ -63,9 +63,8 @@ public class myFetchService extends IntentService
             URL fetch = new URL(fetch_build.toString());
             m_connection = (HttpURLConnection) fetch.openConnection();
             m_connection.setRequestMethod("GET");
-            m_connection.addRequestProperty("X-Auth-Token",getString(R.string.api_key));
+            m_connection.addRequestProperty("X-Auth-Token", getString(R.string.api_key));
             m_connection.connect();
-
             // Read the input stream into a String
             InputStream inputStream = m_connection.getInputStream();
             StringBuffer buffer = new StringBuffer();
@@ -118,8 +117,6 @@ public class myFetchService extends IntentService
                     processJSONdata(getString(R.string.dummy_data), getApplicationContext(), false);
                     return;
                 }
-
-
                 processJSONdata(JSON_data, getApplicationContext(), true);
             } else {
                 //Could not Connect
@@ -178,7 +175,6 @@ public class myFetchService extends IntentService
         try {
             JSONArray matches = new JSONObject(JSONdata).getJSONArray(FIXTURES);
 
-
             //ContentValues to be inserted
             Vector<ContentValues> values = new Vector <ContentValues> (matches.length());
             for(int i = 0;i < matches.length();i++)
@@ -192,12 +188,20 @@ public class myFetchService extends IntentService
                 //add leagues here in order to have them be added to the DB.
                 // If you are finding no data in the app, check that this contains all the leagues.
                 // If it doesn't, that can cause an empty DB, bypassing the dummy data routine.
-                if(     League.equals(PREMIER_LEAGUE)      ||
-                        League.equals(SERIE_A)             ||
-                        League.equals(BUNDESLIGA1)         ||
-                        League.equals(BUNDESLIGA2)         ||
-                        League.equals(PRIMERA_DIVISION)     )
-                {
+                //Getting all Leagues
+//                if(     League.equals(PREMIER_LEAGUE)      ||
+//                        League.equals(SERIE_A)             ||
+//                        League.equals(BUNDESLIGA1)         ||
+//                        League.equals(BUNDESLIGA2)         ||
+//                        League.equals(PRIMERA_DIVISION)    ||
+//                        League.equals(LIGUE1)              ||
+//                        League.equals(LIGUE2)              ||
+//                        League.equals(SEGUNDA_DIVISION)    ||
+//                        League.equals(PRIMERA_DIVISION)    ||
+//                        League.equals(PRIMERA_LIGA)        ||
+//                        League.equals(Bundesliga3)         ||
+//                        League.equals(EREDIVISIE))
+//                {
                     match_id = match_data.getJSONObject(LINKS).getJSONObject(SELF).
                             getString("href");
                     match_id = match_id.replace(MATCH_LINK, "");
@@ -239,6 +243,7 @@ public class myFetchService extends IntentService
                     ContentValues match_values = new ContentValues();
                     match_values.put(DatabaseContract.scores_table.MATCH_ID,match_id);
                     match_values.put(DatabaseContract.scores_table.DATE_COL,mDate);
+                    System.out.println("Salvando data como: " + mDate);
                     match_values.put(DatabaseContract.scores_table.TIME_COL,mTime);
                     match_values.put(DatabaseContract.scores_table.HOME_COL,Home);
                     match_values.put(DatabaseContract.scores_table.AWAY_COL,Away);
@@ -257,7 +262,7 @@ public class myFetchService extends IntentService
                     //Log.v(LOG_TAG,Away_goals);
 
                     values.add(match_values);
-                }
+//                }
             }
             int inserted_data = 0;
             ContentValues[] insert_data = new ContentValues[values.size()];
