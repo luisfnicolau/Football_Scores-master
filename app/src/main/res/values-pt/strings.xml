@@ -14,6 +14,10 @@
     <string name="hour">Hora</string>
     <string name="versus">Versus</string>
     <string name="not_known_league_text">Liga desconhecida, favor reportar</string>
+    <string name="no_games">Não há jogos hoje :(</string>
+    <string name="score">placar</string>
+    <string name="half_hour">e trinta</string>
+    <string name="to">a</string>
     <string name="about_text">
         Este Aplicativo pega os placares de jogos de varias ligas.
         Todas as Partidas são adquiridas pela football-data.org free API.

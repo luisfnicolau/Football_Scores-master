@@ -26,6 +26,10 @@
     <string name="hour">Hour</string>
     <string name="versus">Versus</string>
     <string name="not_known_league_text">Not known League Please report</string>
+    <string name="no_games">No Games Today :(</string>
+    <string name="score">score</string>
+    <string name="half_hour">and thirty</string>
+    <string name="to">to</string>
     <string name="about_text">
         This Application get Football Matches Score for the Premier League,Seria A,Bundesliga,Primera Division
         and the Uefa Champions League.
