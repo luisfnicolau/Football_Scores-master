@@ -10,6 +10,7 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import barqsoft.footballscores.DatabaseContract;
@@ -25,6 +26,8 @@ public class WidgetListService extends RemoteViewsService {
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         return new RemoteViewsFactory() {
 
+            private ArrayList<String> allDays;
+
             private Cursor data = null;
 
             @Override
@@ -36,16 +39,76 @@ public class WidgetListService extends RemoteViewsService {
                 if (data != null) {
                     data.close();
                 }
-                Date fragmentdate = new Date(System.currentTimeMillis()+((-2)*(86400000)));
-                SimpleDateFormat mformat = new SimpleDateFormat("yyyy-MM-dd");
-                String date = mformat.format(fragmentdate);
-                final long identityToken = Binder.clearCallingIdentity();
-                data = getContentResolver().query(DatabaseContract.scores_table.buildScoreWithDate(),
-                        null,
-                        null,
-                        new String[]{date},
-                        null);
-                Binder.restoreCallingIdentity(identityToken);
+                allDays = new ArrayList<String>();
+                for (int i = -2; i < 3; i++) {
+                    if (data != null) {
+                        data.close();
+                    }
+                    Date fragmentdate = new Date(System.currentTimeMillis() + ((i) * (86400000)));
+                    SimpleDateFormat mformat = new SimpleDateFormat("yyyy-MM-dd");
+                    String date = mformat.format(fragmentdate);
+                    final long identityToken = Binder.clearCallingIdentity();
+                    data = getContentResolver().query(DatabaseContract.scores_table.SCORES_CONTENT_URI,
+                            null,
+                            null,
+                            null,
+                            null);
+//                    if (data.moveToFirst()) {
+//                        switch (i) {
+//                            case -2:
+//                                do {
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.HOME_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.AWAY_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.DATE_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.TIME_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.HOME_GOALS_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.AWAY_GOALS_COL)));
+//                                } while (data.moveToNext());
+//                                break;
+//                            case -1:
+//                                do {
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.HOME_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.AWAY_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.DATE_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.TIME_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.HOME_GOALS_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.AWAY_GOALS_COL)));
+//                                } while (data.moveToNext());
+//                                break;
+//                            case 0:
+//                                do {
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.HOME_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.AWAY_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.DATE_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.TIME_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.HOME_GOALS_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.AWAY_GOALS_COL)));
+//                                } while (data.moveToNext());
+//                                break;
+//                            case 1:
+//                                do {
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.HOME_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.AWAY_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.DATE_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.TIME_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.HOME_GOALS_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.AWAY_GOALS_COL)));
+//                                } while (data.moveToNext());
+//                                break;
+//                            case 2:
+//                                do {
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.HOME_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.AWAY_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.DATE_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.TIME_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.HOME_GOALS_COL)));
+//                                    allDays.add(data.getString(data.getColumnIndex(DatabaseContract.scores_table.AWAY_GOALS_COL)));
+//                                } while (data.moveToNext());
+//                                break;
+//                        }
+//                    }
+                    Binder.restoreCallingIdentity(identityToken);
+                }
             }
 
             @Override
@@ -58,29 +121,46 @@ public class WidgetListService extends RemoteViewsService {
 
             @Override
             public int getCount() {
-                System.out.println("marco " + data.getCount());
-                return data == null ? 0 : data.getCount();
+                return data.getCount();
             }
 
             @Override
             public RemoteViews getViewAt(int position) {
 
 
-                if (position == AdapterView.INVALID_POSITION ||
-                        data == null || !data.moveToPosition(position)) {
+                if (position == AdapterView.INVALID_POSITION || data == null || !data.moveToPosition(position)) {
                     return null;
                 }
                 RemoteViews views = new RemoteViews(getPackageName(), R.layout.widget_detail_list_item);
 
+
+
                 String home = data.getString(data.getColumnIndex(DatabaseContract.scores_table.HOME_COL));
                 String away = data.getString(data.getColumnIndex(DatabaseContract.scores_table.AWAY_COL));
-                String league = data.getString(data.getColumnIndex(DatabaseContract.scores_table.LEAGUE_COL));
                 String date = data.getString(data.getColumnIndex(DatabaseContract.scores_table.DATE_COL));
                 String time = data.getString(data.getColumnIndex(DatabaseContract.scores_table.TIME_COL));
                 String homeGoals = data.getString(data.getColumnIndex(DatabaseContract.scores_table.HOME_GOALS_COL));
                 String awayGoals = data.getString(data.getColumnIndex(DatabaseContract.scores_table.AWAY_GOALS_COL));
 
-                System.out.println("Aqui" + home + " " + away + " " + league + " " + date + " " + time + " " + homeGoals + " " + awayGoals);
+
+
+                Date fragmentdate = new Date(System.currentTimeMillis());
+                SimpleDateFormat mformat = new SimpleDateFormat("yyyy-MM-dd");
+                String thisDay = mformat.format(fragmentdate);
+
+                System.out.println(date);
+
+                if (thisDay.substring(thisDay.length() - 2, thisDay.length()).equals(date.substring(date.length() - 2, date.length()))) {
+                    date = Utilies.getDayName(getApplicationContext(), System.currentTimeMillis());
+                } else if (Integer.parseInt(thisDay.substring(thisDay.length() - 2, thisDay.length())) == Integer.parseInt(date.substring(date.length() - 2, date.length())) - 1) {
+                    date = Utilies.getDayName(getApplicationContext(), System.currentTimeMillis() + 86400000);
+                } else if (Integer.parseInt(thisDay.substring(thisDay.length() - 2, thisDay.length())) == Integer.parseInt(date.substring(date.length() - 2, date.length())) - 2) {
+                    date = Utilies.getDayName(getApplicationContext(), System.currentTimeMillis() + 2 * 86400000);
+                } else if (Integer.parseInt(thisDay.substring(thisDay.length() - 2, thisDay.length())) == Integer.parseInt(date.substring(date.length() - 2, date.length())) + 1) {
+                    date = Utilies.getDayName(getApplicationContext(), System.currentTimeMillis() - 86400000);
+                } else if (Integer.parseInt(thisDay.substring(thisDay.length() - 2, thisDay.length())) == Integer.parseInt(date.substring(date.length() - 2, date.length())) + 2) {
+                    date = Utilies.getDayName(getApplicationContext(), System.currentTimeMillis() - 2 * 86400000);
+                }
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
                     String formatedTime;
@@ -108,18 +188,8 @@ public class WidgetListService extends RemoteViewsService {
                 views.setTextViewText(R.id.home_name, home);
                 views.setTextViewText(R.id.away_name, away);
                 views.setTextViewText(R.id.data_textview, time);
-//                final Intent fillInIntent = new Intent();
-//                String locationSetting =
-//                        Utility.getPreferredLocation(DetailWidgetRemoteViewsService.this);
-//                Uri weatherUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
-//                        locationSetting,
-//                        dateInMillis);
-//                fillInIntent.setData(PopularMoviesContract.PopularEntry.CONTENT_URI);
-//                byte[] byteArray = PopularMoviesUtility.convertImageToBytes(posters[position]);
-//                fillInIntent.putStringArrayListExtra(PopularMoviesDetailActivityFragment.MOVIES_LIST_NAME, moviesInfo);
-//                fillInIntent.putExtra(PopularMoviesDetailActivityFragment.PREFERENCE_NAME, preference);
-//                fillInIntent.putExtra(PopularMoviesDetailActivityFragment.BYTE_ARRAY_NAME, byteArray);
-//                views.setOnClickFillInIntent(R.id.widget_grid_item, fillInIntent);
+                views.setTextViewText(R.id.date_text, date);
+
                 return views;
             }
 

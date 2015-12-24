@@ -42,7 +42,9 @@ public class ScoresProvider extends ContentProvider
     {
         String link = uri.toString();
         {
-           if(link.contentEquals(DatabaseContract.BASE_CONTENT_URI.toString()))
+            //Bug here,
+//            DatabaseContract.CONTENT_URI.toString()
+           if(link.contentEquals(DatabaseContract.scores_table.SCORES_CONTENT_URI.toString()))
            {
                return MATCHES;
            }
@@ -134,7 +136,8 @@ public class ScoresProvider extends ContentProvider
     public int bulkInsert(Uri uri, ContentValues[] values)
     {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        //db.delete(DatabaseContract.SCORES_TABLE,null,null);
+        //coment caused bug
+        db.delete(DatabaseContract.SCORES_TABLE,null,null);
         //Log.v(FetchScoreTask.LOG_TAG,String.valueOf(muriMatcher.match(uri)));
         switch (match_uri(uri))
         {

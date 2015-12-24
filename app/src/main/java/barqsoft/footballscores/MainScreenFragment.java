@@ -45,8 +45,18 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
         update_scores();
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         final ListView score_list = (ListView) rootView.findViewById(R.id.scores_list);
-        mAdapter = new scoresAdapter(getActivity(),null,0);
-        score_list.setAdapter(mAdapter);
+        Cursor cursor = getActivity().getContentResolver().query(DatabaseContract.scores_table.SCORES_CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+        if (cursor.getCount() != 0) {
+            mAdapter = new scoresAdapter(getActivity(), null, 0);
+            score_list.setAdapter(mAdapter);
+        } else {
+            rootView = inflater.inflate(R.layout.empty, container, false);
+            return rootView;
+        }
         getLoaderManager().initLoader(SCORES_LOADER,null,this);
         mAdapter.detail_match_id = MainActivity.selected_match_id;
         score_list.setOnItemClickListener(new AdapterView.OnItemClickListener()

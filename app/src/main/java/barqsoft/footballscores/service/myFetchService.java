@@ -111,12 +111,14 @@ public class myFetchService extends IntentService
             if (JSON_data != null) {
                 //This bit is to check if the data contains any matches. If not, we call processJson on the dummy data
                 JSONArray matches = new JSONObject(JSON_data).getJSONArray("fixtures");
-                if (matches.length() == 0) {
-                    //if there is no data, call the function on dummy data
-                    //this is expected behavior during the off season.
-                    processJSONdata(getString(R.string.dummy_data), getApplicationContext(), false);
-                    return;
-                }
+                //Don't need dummy info anymore
+                System.out.println("matches: " + matches.length());
+//                if (matches.length() == 0) {
+//                    //if there is no data, call the function on dummy data
+//                    //this is expected behavior during the off season.
+//                    processJSONdata(getString(R.string.dummy_data), getApplicationContext(), false);
+//                    return;
+//                }
                 processJSONdata(JSON_data, getApplicationContext(), true);
             } else {
                 //Could not Connect
@@ -267,8 +269,10 @@ public class myFetchService extends IntentService
             int inserted_data = 0;
             ContentValues[] insert_data = new ContentValues[values.size()];
             values.toArray(insert_data);
+            //bug, dont erase old table to insert new one
             inserted_data = mContext.getContentResolver().bulkInsert(
-                    DatabaseContract.BASE_CONTENT_URI,insert_data);
+                    //bug here
+                    DatabaseContract.scores_table.SCORES_CONTENT_URI,insert_data);
 
             //Log.v(LOG_TAG,"Succesfully Inserted : " + String.valueOf(inserted_data));
         }
