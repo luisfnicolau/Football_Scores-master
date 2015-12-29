@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 public class Utilies
 {
     public static final int SERIE_A = 357;
-    public static final int PREMIER_LEGAUE = 354;
+    public static final int PREMIER_LEAGUE = 354;
     public static final int CHAMPIONS_LEAGUE = 362;
     public static final int PRIMERA_DIVISION = 358;
     public static final int BUNDESLIGA = 351;
@@ -19,10 +19,9 @@ public class Utilies
     public static final int BUNDESLIGA2 = 395;
     public static final int LIGUE1 = 396;
     public static final int LIGUE2 = 397;
-    public static final int PREMIER_LEAGUE = 398;
     public static final int SEGUNDA_DIVISION = 400;
     public static final int PRIMERA_LIGA = 402;
-    public static final int Bundesliga3 = 403;
+    public static final int BUNDESLIGA3 = 403;
     public static final int EREDIVISIE = 404;
 
 
@@ -30,20 +29,19 @@ public class Utilies
     {
         switch (league_num)
         {
-            case SERIE_A : return context.getString(R.string.seriaa);
-            case PREMIER_LEGAUE : return context.getString(R.string.premierleague);
+            case SERIE_A : return context.getString(R.string.seriaA);
+            case PREMIER_LEAGUE : return context.getString(R.string.premierLeague);
             case CHAMPIONS_LEAGUE : return context.getString(R.string.champions_league);
-            case PRIMERA_DIVISION : return context.getString(R.string.primeradivison);
+            case PRIMERA_DIVISION : return context.getString(R.string.primeraDivison);
             case BUNDESLIGA : return context.getString(R.string.bundesliga);
-            case BUNDESLIGA1 : return "Bundesliga1";
-            case BUNDESLIGA2 : return "Bundesliga2";
-            case Bundesliga3 : return "Bundesliga3";
-            case LIGUE1 : return "Ligue1";
-            case LIGUE2 : return  "Ligue2";
-            case PREMIER_LEAGUE : return "Premier League";
-            case SEGUNDA_DIVISION : return "Segunda Division";
-            case PRIMERA_LIGA : return "Primeira Liga";
-            case EREDIVISIE : return "Erediviste";
+            case BUNDESLIGA1 : return context.getString(R.string.bundesliga1);
+            case BUNDESLIGA2 : return context.getString(R.string.bundesliga2);
+            case BUNDESLIGA3 : return context.getString(R.string.bundesliga3);
+            case LIGUE1 : return context.getString(R.string.ligue1);
+            case LIGUE2 : return context.getString(R.string.ligue2);
+            case SEGUNDA_DIVISION : return context.getString(R.string.segundaDivision);
+            case PRIMERA_LIGA : return context.getString(R.string.primeiraLiga);
+            case EREDIVISIE : return context.getString(R.string.erediviste);
 
             default: return context.getString(R.string.not_known_league_text);
         }
