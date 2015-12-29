@@ -206,9 +206,17 @@ public class BookService extends IntentService {
 
                 writeBackBook(ean, title, subtitle, desc, imgUrl);
 
+
+                //Add No Author Available warning in case the author are not available avoid bugs when author is null
                 if (bookInfo.has(AUTHORS)) {
                     writeBackAuthors(ean, bookInfo.getJSONArray(AUTHORS));
+                } else {
+                    ContentValues values = new ContentValues();
+                    values.put(AlexandriaContract.AuthorEntry._ID, ean);
+                    values.put(AlexandriaContract.AuthorEntry.AUTHOR, "No Author Available");
+                    getContentResolver().insert(AlexandriaContract.AuthorEntry.CONTENT_URI, values);
                 }
+
                 if (bookInfo.has(CATEGORIES)) {
                     writeBackCategories(ean, bookInfo.getJSONArray(CATEGORIES));
                 }
