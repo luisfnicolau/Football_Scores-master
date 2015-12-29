@@ -16,6 +16,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:paddingRight="6dp"
+            android:paddingEnd="6dp"
             android:text="@string/test_text"
             android:textColor="@android:color/black"
             android:textSize="@dimen/League" />
@@ -42,9 +43,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:drawableLeft="@android:drawable/ic_menu_share"
+            android:drawableStart="@android:drawable/ic_menu_share"
             android:drawablePadding="-50dp"
             android:gravity="center"
             android:paddingLeft="100dp"
+            android:paddingStart="100dp"
             android:contentDescription="@string/share_text"
             android:text="@string/share_text" />
     </FrameLayout>
